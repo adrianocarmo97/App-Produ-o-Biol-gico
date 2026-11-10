@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Drone | Produção</title>
+<script src="pdf.min.js"></script>
+<style>
+:root{color-scheme:dark;--bg:#0b1118;--card:#121b26;--card2:#0e1620;--line:#1f2b3a;--tx:#e6edf5;--mut:#7d8da1;--g:#22c55e;--g2:#16a34a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:inherit}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.app{max-width:520px;margin:0 auto;padding:0 14px 40px}
+header{display:flex;align-items:center;gap:10px;padding:14px 0 8px}
+.logo{width:36px;height:36px;border-radius:10px;background:var(--g2);display:grid;place-items:center;font-size:20px}
+header h1{font-size:15px;margin:0;letter-spacing:.12em}
+header h1 span{color:var(--g)}
+header small{color:var(--mut);font-size:11px;display:block}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 14px}
+.tab{background:none;border:0;color:var(--mut);font-size:10px;letter-spacing:.08em;text-align:left;padding:0;cursor:pointer}
+.tab i{display:block;height:3px;border-radius:2px;background:var(--line);margin-bottom:6px}
+.tab.on{color:var(--tx)}.tab.on i,.tab.done i{background:var(--g)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
+.ch{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+.num{width:32px;height:32px;border-radius:9px;background:var(--card2);display:grid;place-items:center;font-weight:700;font-size:13px}
+.ch h2{margin:0;font-size:16px}.ch p{margin:2px 0 0;font-size:12px;color:var(--mut)}
+.drop{border:1.5px dashed #1d5a35;border-radius:14px;padding:22px 14px;text-align:center;background:rgba(34,197,94,.04)}
+.ic{width:50px;height:50px;margin:0 auto 14px;border-radius:14px;background:rgba(34,197,94,.14);display:grid;place-items:center;font-size:22px}
+.btn{width:100%;background:var(--g);color:#06220f;border:0;border-radius:10px;padding:15px;font-weight:800;font-size:13px;letter-spacing:.06em;cursor:pointer;box-shadow:0 6px 20px rgba(34,197,94,.25)}
+.btn:active{transform:scale(.99)}
+.btn.sec{background:var(--card2);color:var(--tx);border:1px solid var(--line);box-shadow:none}
+.hint{font-size:12px;color:var(--mut);margin-top:10px}
+.link{background:none;border:0;color:var(--mut);font-size:13px;margin-top:14px;cursor:pointer;padding:0}
+label{display:block;font-size:11px;letter-spacing:.08em;color:var(--g);margin:14px 0 6px;font-weight:600}
+input,select{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:13px;color:var(--tx);font-size:15px;font-family:inherit}
+input:focus,select:focus{outline:2px solid var(--g2);border-color:transparent}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.seg button{background:var(--card2);border:1px solid var(--line);color:var(--mut);border-radius:10px;padding:14px;font-weight:800;font-size:16px;cursor:pointer}
+.seg button.on{background:rgba(34,197,94,.15);color:var(--g);border-color:var(--g2)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nav{display:flex;gap:10px;margin-top:6px}
+.nav .btn{flex:1}
+.q{display:grid;grid-template-columns:1.2fr 1fr 36px;gap:8px;margin-bottom:8px;align-items:center}
+.q input{padding:11px;font-size:14px}
+.x{background:none;border:0;color:#f87171;font-size:20px;cursor:pointer}
+.qh{display:grid;grid-template-columns:1.2fr 1fr 36px;gap:8px;font-size:10px;color:var(--mut);letter-spacing:.08em;margin-bottom:6px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.st{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.st b{display:block;font-size:22px;color:var(--g)}.st span{font-size:11px;color:var(--mut)}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-size:14px}
+dt{color:var(--mut)}dd{margin:0;text-align:right}
+.msg{font-size:12px;color:var(--g);margin-top:8px;min-height:16px}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="logo">🛸</div><div><h1>DRONE | <span>PRODUÇÃO</span></h1><small>Gestão rápida de produção agrícola</small></div></header>
+<nav class="tabs" id="tabs"></nav>
+
+<section id="s0">
+ <div class="card">
+  <div class="ch"><div class="num">1</div><div><h2>Ordem de Serviço</h2><p>Importe o PDF da OS para leitura automática</p></div></div>
+  <div class="drop">
+   <div class="ic">⬆️</div>
+   <button class="btn" id="imp">IMPORTAR ORDEM DE SERVIÇO</button>
+   <input type="file" id="file" accept="application/pdf" class="hide">
+   <div class="hint" id="fname">Arquivo PDF · até 15 MB</div>
+  </div>
+  <button class="link" id="man">✎ PDF ilegível? Preencher manualmente</button>
+  <div class="msg" id="pmsg"></div>
+ </div>
+ <div class="card" id="osf">
+  <div class="ch"><div class="num">✓</div><div><h2>Dados da OS</h2><p>Confira ou edite as informações</p></div></div>
+  <label>Nº DA OS</label><input id="os" inputmode="numeric" placeholder="Ex: 10452">
+  <label>FAZENDA / PROPRIEDADE</label><input id="faz" placeholder="Nome da fazenda">
+  <label>PRODUTO / APLICAÇÃO</label><select id="prod"><option value="">Selecione...</option><option value="Trichogramma">Trichogramma</option><option value="Cotesia">Cotesia</option></select>
+  <div class="nav" style="margin-top:16px"><button class="btn" data-go="1">CONTINUAR →</button></div>
+ </div>
+</section>
+
+<section id="s1" class="hide">
+ <div class="card">
+  <div class="ch"><div class="num">2</div><div><h2>Dados do Voo</h2><p>Data, turno e frota</p></div></div>
+  <label>DATA DA PRODUÇÃO</label><input type="date" id="data">
+  <label id="tlabel">TURNO</label>
+  <div class="seg" id="turno"></div>
+  <label>FROTA</label><input id="frota" placeholder="Ex: 230">
+  <div class="row2"><div><label>PILOTO</label><input id="piloto" placeholder="Nome"></div><div><label>DOSE</label><input id="vazao" inputmode="decimal" placeholder="Ex: 10"></div></div>
+  <div class="row2"><div><label>INÍCIO</label><input type="time" id="ini"></div><div><label>FIM</label><input type="time" id="fim"></div></div>
+  <div class="nav" style="margin-top:18px"><button class="btn sec" data-go="0">← VOLTAR</button><button class="btn" data-go="2">CONTINUAR →</button></div>
+ </div>
+</section>
+
+<section id="s2" class="hide">
+ <div class="card">
+  <div class="ch"><div class="num">3</div><div><h2>Glebas</h2><p>Registre a área de cada gleba (o total é somado)</p></div></div>
+  <div class="qh"><span>GLEBA</span><span>ÁREA (ha)</span><span></span></div>
+  <div id="qs"></div>
+  <button class="btn sec" id="addq" style="margin-top:6px">+ ADICIONAR GLEBA</button>
+  <div class="nav" style="margin-top:18px"><button class="btn sec" data-go="1">← VOLTAR</button><button class="btn" data-go="3">VER RESUMO →</button></div>
+ </div>
+</section>
+
+<section id="s3" class="hide">
+ <div class="card">
+  <div class="ch"><div class="num">4</div><div><h2>Resumo</h2><p>Produção do voo</p></div></div>
+  <div class="stats">
+   <div class="st"><b id="tha">0</b><span>hectares</span></div>
+   <div class="st"><b id="thh">0</b><span>ha/hora</span></div>
+   <div class="st"><b id="tq">0</b><span>glebas</span></div>
+   <div class="st"><b id="tl">0</b><span>dose total (dose × ha)</span></div>
+  </div>
+  <dl id="dl"></dl>
+  <div class="nav" style="margin-top:18px"><button class="btn sec" id="copy">COPIAR</button><button class="btn" id="share">COMPARTILHAR</button></div>
+  <button class="link" id="reset">Nova produção</button>
+  <div class="msg" id="smsg"></div>
+ </div>
+</section>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const names=['ORDEM','VOO','GLEBAS','RESUMO'];
+let step=0,S={os:'',faz:'',prod:'',data:'',turno:'',frota:'',piloto:'',vazao:'',ini:'',fim:'',q:[{n:'',a:'',m:''}]};
+try{const r=localStorage.getItem('drone-prod');if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+if(!S.data)S.data=new Date().toISOString().slice(0,10);
+const save=()=>{try{localStorage.setItem('drone-prod',JSON.stringify(S))}catch(e){}};
+const ids=['os','faz','prod','data','frota','piloto','vazao','ini','fim'];
+ids.forEach(k=>{$(k).value=S[k]||'';$(k).addEventListener('input',e=>{S[k]=e.target.value;save()})});
+function tabs(){$('tabs').innerHTML=names.map((n,i)=>`<button class="tab ${i==step?'on':''} ${i<step?'done':''}" data-t="${i}"><i></i>${n}</button>`).join('')}
+function show(i){step=i;for(let k=0;k<4;k++)$('s'+k).classList.toggle('hide',k!=i);tabs();if(i==3)summary();scrollTo({top:0,behavior:'smooth'})}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-t]');if(t)show(+t.dataset.t);const g=e.target.closest('[data-go]');if(g)show(+g.dataset.go)});
+function turno(){const tri=S.prod==='Trichogramma';const o=tri?['1ª','2ª','3ª']:['A','B','C'];$('tlabel').textContent=tri?'ETAPA':'TURNO';if(!o.includes(S.turno))S.turno='';$('turno').innerHTML=o.map(x=>`<button data-v="${x}" class="${x==S.turno?'on':''}">${x}</button>`).join('')}
+$('turno').onclick=e=>{const b=e.target.closest('button');if(b){S.turno=b.dataset.v;turno();save()}};turno();
+$('prod').addEventListener('input',turno);
+function qs(){$('qs').innerHTML=S.q.map((r,i)=>`<div class="q"><input data-i="${i}" data-k="n" value="${r.n}" placeholder="Ex: Gleba 01"><input data-i="${i}" data-k="a" inputmode="decimal" value="${r.a}" placeholder="0"><button class="x" data-d="${i}">×</button></div>`).join('')}
+$('qs').addEventListener('input',e=>{const i=e.target.dataset.i;if(i!=null){S.q[i][e.target.dataset.k]=e.target.value;save()}});
+$('qs').addEventListener('click',e=>{const d=e.target.dataset.d;if(d!=null){S.q.splice(+d,1);if(!S.q.length)S.q.push({n:'',a:'',m:''});qs();save()}});
+$('addq').onclick=()=>{S.q.push({n:'',a:'',m:''});qs();save()};qs();
+$('imp').onclick=()=>$('file').click();
+$('man').onclick=()=>{$('os').focus();$('osf').scrollIntoView({behavior:'smooth'})};
+$('file').onchange=async e=>{
+ const f=e.target.files[0];if(!f)return;
+ if(f.size>15*1048576){$('pmsg').textContent='Arquivo maior que 15 MB.';return}
+ $('fname').textContent=f.name;$('pmsg').textContent='Lendo PDF...';
+ try{
+  pdfjsLib.GlobalWorkerOptions.workerSrc='pdf.worker.min.js';
+  const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise;
+  let t='';for(let p=1;p<=Math.min(pdf.numPages,5);p++){const c=await (await pdf.getPage(p)).getTextContent();t+=c.items.map(i=>i.str).join(' ')+'\n'}
+  const g=(re)=>{const m=t.match(re);return m?m[1].trim():''};
+  const os=g(/(?:O\.?S\.?|Ordem de Servi[cç]o)\s*(?:n[º°o.]*)?\s*[:\-]?\s*(\d{3,})/i);
+  const faz=g(/(?:Fazenda|Propriedade|Gleba)\s*[:\-]?\s*([A-Za-zÀ-ú0-9 .\-]{3,40})/i);
+  const prod=g(/(?:Produto|Aplica[cç][aã]o|Opera[cç][aã]o)\s*[:\-]?\s*([A-Za-zÀ-ú0-9 .\-]{3,40})/i);
+  if(os)S.os=os;if(faz)S.faz=faz;if(/trich/i.test(t))S.prod='Trichogramma';else if(/cotesia/i.test(t))S.prod='Cotesia';turno();
+  ['os','faz','prod'].forEach(k=>$(k).value=S[k]);save();
+  $('pmsg').textContent=(os||faz||prod)?'PDF lido. Confira os dados abaixo.':'Não encontrei os campos no PDF. Preencha manualmente abaixo.';
+  $('osf').scrollIntoView({behavior:'smooth'});
+ }catch(err){$('pmsg').textContent='Não consegui ler o PDF. Preencha manualmente.'}
+};
+const num=v=>parseFloat(String(v).replace(',','.'))||0;
+function mins(a,b){if(!a||!b)return 0;let d=(+b.slice(0,2)*60+ +b.slice(3))-(+a.slice(0,2)*60+ +a.slice(3));return d<0?d+1440:d}
+function summary(){
+ const ha=S.q.reduce((s,r)=>s+num(r.a),0),qd=S.q.filter(r=>r.n||num(r.a)).length;
+ const m=mins(S.ini,S.fim);
+ $('tha').textContent=ha.toFixed(1);$('tq').textContent=qd;
+ $('thh').textContent=m?(ha/(m/60)).toFixed(1):'—';
+ $('tl').textContent=Math.round(ha*num(S.vazao)*10)/10;
+ const d=S.data?S.data.split('-').reverse().join('/'):'—';
+ const rows=[['OS',S.os||'—'],['Fazenda',S.faz||'—'],['Produto',S.prod||'—'],['Data',d],[S.prod==='Trichogramma'?'Etapa':'Turno',S.turno||'—'],['Dose',S.vazao||'—'],['Frota',S.frota||'—'],['Piloto',S.piloto||'—'],['Horário',S.ini&&S.fim?S.ini+' – '+S.fim:'—']];
+ $('dl').innerHTML=rows.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('');
+ window._txt=`DRONE | PRODUÇÃO\nOS: ${S.os||'—'} · ${S.faz||'—'}\nProduto: ${S.prod||'—'}\nData: ${d} · ${S.prod==='Trichogramma'?'Etapa':'Turno'} ${S.turno||'—'} · Frota ${S.frota||'—'} · Dose ${S.vazao||'—'}\nPiloto: ${S.piloto||'—'}\n`+S.q.filter(r=>r.n||num(r.a)).map(r=>`• ${r.n||'Gleba'}: ${num(r.a)} ha`).join('\n')+`\nTOTAL: ${ha.toFixed(1)} ha em ${qd} gleba(s)`;
+}
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(window._txt);$('smsg').textContent='Resumo copiado!'}catch(e){$('smsg').textContent='Não foi possível copiar.'}};
+$('share').onclick=()=>{window.open('https://wa.me/?text='+encodeURIComponent(window._txt),'_blank')};
+$('reset').onclick=()=>{if(confirm('Limpar todos os dados e iniciar nova produção?')){try{localStorage.removeItem('drone-prod')}catch(e){}location.reload()}};
+tabs();
+</script>
+</body>
+</html>
